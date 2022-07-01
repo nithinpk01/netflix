@@ -2,7 +2,7 @@ const Movie = require("../model/movies");
 
 module.exports = {
 
-  // POST SIGNUP
+  // POST MOVIES
   add: async (req, res) => {
     try {
       await Movie.create(req.body);
@@ -13,16 +13,16 @@ module.exports = {
     }
   },
 
-  //LIST USERS
+  //LIST MOVIES
   list: async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.size) || 20;
     const skip = (page - 1) * limit;
     try {
-      const user = await User.find().limit(limit).skip(skip);
-      const total = await User.countDocuments({});
-      if (user && user.length > 0 && total)
-        return res.status(200).json({ data: user, page: page, size: limit, total: total });
+      const movie = await Movie.find().limit(limit).skip(skip);
+      const total = await Movie.countDocuments({});
+      if (movie && movie.length > 0 && total)
+        return res.status(200).json({ data: movie, page: page, size: limit, total: total });
 
       return res.status(204).json({ message: "No record found" });
     }
@@ -31,12 +31,12 @@ module.exports = {
     }
   },
 
-  //LIST USER BY ID
+  //LIST MOVIE BY ID
   listById: async (req, res) => {
     try {
-      const list = await User.findById(req.params.id);
+      const list = await Movie.findById(req.params.id);
       if (!list)
-        return res.status(204).json({ message: "No user found" });
+        return res.status(204).json({ message: "No movie found" });
 
       return res.status(200).json(list);
     }
@@ -45,17 +45,14 @@ module.exports = {
     }
   },
 
-  //UPDATE USER
+  //UPDATE MOVIE
   update: async (req, res) => {
     try {
-      const user = await User.findOne({ _id: req.params.id });
-      user.isAdmin = req.body.isAdmin
-      user.firstName = req.body.firstName
-      user.lastName = req.body.lastName
-      user.mobile = req.body.mobile
-      user.email = req.body.email
+      const movie = await Movie.findOne({ _id: req.params.id });
+      movie.isSeries = req.body.isSeries
+      movie.name = req.body.name
 
-      await user.save();
+      await movie.save();
       return res.status(200).json({ message: "Update successfull" });
     }
     catch (err) {
@@ -63,11 +60,11 @@ module.exports = {
     }
   },
 
-  //DELETE USER
+  //DELETE MOVIE
   delete: async (req, res) => {
     try {
-      await User.findByIdAndDelete(req.params.id);
-      return res.status(200).json({ message: "User deleted" });
+      await Movie.findByIdAndDelete(req.params.id);
+      return res.status(200).json({ message: "Movie deleted" });
     }
     catch (err) {
       return res.status(500).json(err)
