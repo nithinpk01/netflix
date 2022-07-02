@@ -4,12 +4,16 @@ module.exports = {
 
   // POST MOVIES
   add: async (req, res) => {
-    try {
-      await Movie.create(req.body);
-      return res.status(200).json({ message: "Movie added Successfully" });
-    }
-    catch (err) {
-      return res.status(500).json(err)
+    if (req.user.isAdmin) {
+      try {
+        await Movie.create(req.body);
+        return res.status(200).json({ message: "Movie added Successfully" });
+      }
+      catch (err) {
+        return res.status(500).json(err)
+      }
+    } else {
+      return res.status(200).json({ message: "You are not a valid user" });
     }
   },
 
@@ -47,16 +51,16 @@ module.exports = {
 
   //UPDATE MOVIE
   update: async (req, res) => {
-    try {
-      const movie = await Movie.findOne({ _id: req.params.id });
-      movie.isSeries = req.body.isSeries
-      movie.name = req.body.name
-
-      await movie.save();
-      return res.status(200).json({ message: "Update successfull" });
-    }
-    catch (err) {
-      return res.status(500).json(err)
+    if (req.user.isAdmin) {
+      try {
+        const movie = await Movie.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        return res.status(200).json({ message: "Update successfull" });
+      }
+      catch (err) {
+        return res.status(500).json(err)
+      }
+    } else {
+      return res.status(200).json({ message: "You are not a valid user" });
     }
   },
 
@@ -65,6 +69,28 @@ module.exports = {
     try {
       await Movie.findByIdAndDelete(req.params.id);
       return res.status(200).json({ message: "Movie deleted" });
+    }
+    catch (err) {
+      return res.status(500).json(err)
+    }
+  },
+
+  //RANDOM MOVIE
+  random: async (req, res) => {
+    try {
+      let movie;
+      if (req.query.type === 'series') {
+        movie = await Movie.aggregate([
+          { $match: { isSeries: true } },
+          { $sample: { size: 1 } }
+        ])
+      } else {
+        movie = await Movie.aggregate([
+          { $match: { isSeries: false } },
+          { $sample: { size: 1 } }
+        ])
+      }
+      return res.status(200).json(movie);
     }
     catch (err) {
       return res.status(500).json(err)

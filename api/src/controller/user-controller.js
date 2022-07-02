@@ -17,7 +17,7 @@ module.exports = {
         return res.status(401).json({ message: "Wrong Password" });
 
       const { password, ...info } = user._doc;
-      const token = jwt.createToken({ id: user._id, email: user.email });
+      const token = jwt.createToken({ id: user._id, email: user.email, isAdmin: user.isAdmin });
       return res.status(200).json({ ...info, token });
     }
     catch (err) {

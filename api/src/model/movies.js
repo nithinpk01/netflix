@@ -6,9 +6,34 @@ const Movies = new Schema({
         default: false,
         required: true
     },
-    name: {
+    title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
+    },
+    desc: {
+        type: String
+    },
+    img: {
+        type: String
+    },
+    imgTitle: {
+        type: String
+    },
+    year: {
+        type: String
+    },
+    genre: {
+        type: String
+    },
+    duration: {
+        type: Number
+    },
+    trailer: {
+        type: String
+    },
+    video: {
+        type: String
     }
 }, { timestamps: true });
 

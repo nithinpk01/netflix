@@ -6,7 +6,7 @@ function verifyToken(req, res, next) {
         var token = header.split(" ")[1];
         jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
             if (err) res.status(403).json("Token is not valid");
-
+            req.user = user;
         })
         next();
     } else {
