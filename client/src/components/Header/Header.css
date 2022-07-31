@@ -1,0 +1,25 @@
+.header{
+    background-color: black;
+    width:100%;
+    height: 100px;
+    position: absolute;
+}
+.container{
+    display: flex;
+    justify-content: left;
+    padding: 10px;
+}
+a{
+    margin-right: 20px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+}
+
+.logo{
+    color: red;
+    margin-right: 20px;
+    cursor:pointer;
+}

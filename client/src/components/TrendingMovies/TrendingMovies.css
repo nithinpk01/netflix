@@ -1,0 +1,25 @@
+.row{
+    margin-left: 20px;
+    color:#ffff;
+}
+
+.cards{
+    display: flex;
+    padding:20px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.cards::-webkit-scrollbar{
+    display: none;
+}
+
+h4{
+    margin-left: 20px;
+}
+
+.card{
+    max-height: 250px;
+    margin-right: 10px;
+    max-width:150px;
+}
